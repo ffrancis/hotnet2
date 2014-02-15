@@ -51,12 +51,16 @@ def run(args):
                                                         '--matlab' if args.matlab else '')
     ppr.run(ppr.parse_args(margs.split()))
 
+    # get the output edge list and index files (for the largest connected component) for permutations
+    largest_cc_edgelist_file = '%s/%s_edge_list' % (args.output_dir, args.prefix)
+    largest_cc_index_file = '%s/%s_index_genes' % (args.output_dir, args.prefix)
+
     # make permuted edge lists
     print "\nCreating edge lists for permuted networks"
     print "-------------------------------------------"
     perm_dir = '%s/permuted' % args.output_dir
     if not os.path.exists(perm_dir): os.makedirs(perm_dir)
-    pargs = '-q %s -s %s -e %s -p %s -o %s -n %s' % (args.Q, args.permutation_start_index, args.edgelist_file,
+    pargs = '-q %s -s %s -e %s -p %s -o %s -n %s' % (args.Q, args.permutation_start_index, largest_cc_edgelist_file,
                                                      args.prefix, perm_dir, args.num_permutations)
     permute.run(permute.parse_args(pargs.split()))
 
@@ -68,8 +72,8 @@ def run(args):
         edgelist_file = '%s/%s_edgelist_%s' % (perm_dir, args.prefix, i)
         output_dir = '%s/%s' % (perm_dir, i)
         if not os.path.exists(output_dir): os.makedirs(output_dir)
-        pargs = '-e %s -i %s -o %s -p %s -s %s -a %s %s' % (edgelist_file, args.gene_index_file, output_dir,
-                                                            i, args.index_file_start_index, args.alpha,
+        pargs = '-e %s -i %s -o %s -p %s -s %s -a %s %s' % (edgelist_file, largest_cc_index_file, output_dir,
+                                                            args.prefix, args.index_file_start_index, args.alpha,
                                                             '--matlab' if args.matlab else '')
         ppr.run(ppr.parse_args(pargs.split()))
         os.remove(edgelist_file)
