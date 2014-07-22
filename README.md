@@ -64,7 +64,6 @@ You must provide the following parameters:
         |--permuted_networks_path|'##NUM##' in the path to be replaced with the iteration   |
         |                        |number                                                    |
         -------------------------------------------------------------------------------------
-
 Running with only the parameters specified above will create a 'hotnet2_output' directory in your
 current working directory that contains 4 subdirectories each prefixed with `delta_`. Each of these
 subdirectories contains results files for a different value of the delta parameter used by the
@@ -117,6 +116,10 @@ below. If one of these parameters is not provided, it will be set to the default
         --------------------------------------------------------------------------------------------------------
         |-n/--num_permutations   | 100              |Number of permutations that should be used for parameter  |
         |                        |                  |selection and statistical significance testing            |
+        --------------------------------------------------------------------------------------------------------
+        |-dsf/                   | None             |Path to a tab-separated file containing a gene name in the|
+        |--display_score_file    |                  |first column and the display score for that gene in the   |
+        |                        |                  |second column of each line.                               |
         --------------------------------------------------------------------------------------------------------
         |--parallel              | Not default      |Include flag to run permutation tests in parallel. Only   |
         |                        |                  |recommended for machines with at least 8 cores.           |
@@ -454,6 +457,10 @@ The steps of the algorithm and the code provided for each step are described bel
         |-ef/--edge_file         | REQUIRED         |Path to TSV file listing edges of the interaction network,|
         |                        |                  |where each row contains the indices of two genes that are |
         |                        |                  |connected in the network.                                 |
+        --------------------------------------------------------------------------------------------------------
+        |-dsf/                   | None             |Path to a tab-separated file containing a gene name in the|
+        |--display_score_file    |                  |first column and the display score for that gene in the   |
+        |                        |                  |second column of each line.                               |
         --------------------------------------------------------------------------------------------------------
         |-nn/--network_name      | Network          |Display name for the interaction network.                 |
         --------------------------------------------------------------------------------------------------------

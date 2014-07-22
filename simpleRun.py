@@ -27,6 +27,10 @@ def parse_args(raw_args):
                         help='Path to a tab-separated file containing a gene name in the first\
                               column and the heat score for that gene in the second column of\
                               each line.')
+    parser.add_argument('-dsf', '--display_score_file', required=True,
+                        help='Path to a tab-separated file containing a gene name in the first\
+                              column and the display score for that gene in the second column of\
+                              each line.')
     parser.add_argument('-ms', '--min_heat_score', type=float,
                         help='Minimum heat score for a gene to be eligible for inclusion in a\
                               returned connected component. By default, all genes with positive\
@@ -80,7 +84,7 @@ def run(args):
     # find smallest delta 
     deltas = ft.get_deltas_for_network(args.permuted_networks_path, heat, INFMAT_NAME,
                                        infmat_index, MAX_CC_SIZES, 
-				                       args.num_permutations, args.parallel)
+                               args.num_permutations, args.parallel)
     
     # and run HotNet with the median delta for each size
     run_deltas = [np.median(deltas[size]) for size in deltas]
@@ -144,9 +148,10 @@ def run(args):
         # write visualization output if edge file given
         if args.edge_file:
             viz_data = {"delta": delta, 'subnetworks': list()}
+            d_score = hnio.load_display_score_tsv(args.display_score_file)
             for cc in ccs:
                 viz_data['subnetworks'].append(viz.get_component_json(cc, heat, edges, gene2index,
-                                                                      args.network_name))
+                                                                      args.network_name, d_score))
                 
             delta_viz_dir = '%s/viz/delta%s' % (args.output_directory, delta)
             if not os.path.isdir(delta_viz_dir):
