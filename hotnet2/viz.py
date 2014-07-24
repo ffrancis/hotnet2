@@ -1,10 +1,8 @@
 import hnio
 
 def get_nodes(cc, gene2heat, d_score):
-    if d_score is None:
-        return [{'name': gene, 'heat': gene2heat[gene]} for gene in cc]
-    else:
-        return [{'name': gene, 'heat': d_score[gene]} for gene in cc]
+    scores = d_score if d_score else gene2heat
+    return [{'name': gene, 'heat': scores[gene]} for gene in cc]
 
 def get_edges(cc, edges, gene2index, networkName):
     edgeData = list()

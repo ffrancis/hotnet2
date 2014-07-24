@@ -60,11 +60,8 @@ def load_display_score_tsv(d_score_file):
     d_score_file -- path to TSV file with gene names in the first column and heat scores in the second
 
     """
-    if d_score_file is None: 
-        return None
-    else:
-        arrs = [l.split() for l in open(d_score_file)]
-        return dict([(arr[0], float(arr[1])) for arr in arrs])
+    arrs = [l.split() for l in open(d_score_file)]
+    return dict([(arr[0], float(arr[1])) for arr in arrs])
 
 def load_genes(gene_file):
     """Load tested genes from a file and return as a set.

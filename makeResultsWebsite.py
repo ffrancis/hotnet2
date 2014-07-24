@@ -18,7 +18,7 @@ def parse_args(raw_args):
                         help='Path to TSV file listing edges of the interaction network, where\
                               each row contains the indices of two genes that are connected in the\
                               network.')
-    parser.add_argument('-dsf', '--display_score_file', default=None,
+    parser.add_argument('-dsf', '--display_score_file',
                         help='Path to a tab seperated file contain a gene name in the first\
                               column and the display score for that gene in the second column\
                               of each line.')
@@ -48,17 +48,17 @@ def run(args):
         results = json.load(open(results_file))
         ccs = results['components']
         gene2heat = json.load(open(results['parameters']['heat_file']))['heat']
-        d_score = hnio.load_display_score_tsv(args.display_score_file)
+        d_score = hnio.load_display_score_tsv(args.display_score_file) if args.display_score_file else None
         edges = hnio.load_ppi_edges(args.edge_file)
         gene2index = dict([(gene, index) for index, gene \
-                        in hnio.load_index(results['parameters']['fmat_index_file']).iteritems()])
+                        in hnio.load_index(results['parameters']['infmat_index_file']).iteritems()])
         delta = results['parameters']['delta']
 
         deltas.append(delta)
 
         output = {"delta": delta, 'subnetworks': list()}
         for cc in ccs:
-            output['subnetworks'].append(get_component_json(cc, heat, edges, gene2index, args.network_name, d_score))
+            output['subnetworks'].append(get_component_json(cc, gene2heat, edges, gene2index, args.network_name, d_score))
 
         # write output
         delta_dir = '%s/delta%s' % (outdir, delta)
