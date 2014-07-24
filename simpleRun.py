@@ -27,7 +27,7 @@ def parse_args(raw_args):
                         help='Path to a tab-separated file containing a gene name in the first\
                               column and the heat score for that gene in the second column of\
                               each line.')
-    parser.add_argument('-dsf', '--display_score_file', #default=None,
+    parser.add_argument('-dsf', '--display_score_file',
                         help='Path to a tab-separated file containing a gene name in the first\
                               column and the display score for that gene in the second column of\
                               each line.')
