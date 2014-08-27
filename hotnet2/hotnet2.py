@@ -25,17 +25,18 @@ def induce_infmat(infmat, index2gene, genelist):
     gene2index = dict([(gene, index) for index, gene in index2gene.items()])
  
     # Identify genes in the given list that are also in the network
-    genelist = [g for g in genelist if g in gene2index.keys()]
+    genelist = set(genelist) if type(genelist) != set else genelist
+    genelist = sorted(genelist.intersection(gene2index.keys()))
     indices = [gene2index[g]-start_index for g in genelist]
     print "\t- Genes in list and network:", len( indices )
  
     # Create an induced influence matrix
-    M = np.zeros( (len(genelist), len(genelist)) )
-    for i in range(len(indices)):
-        M[i,] = infmat[gene2index[genelist[i]] - start_index, indices]
+    M = np.zeros((len(genelist), len(genelist)))
+    for i, gene in enumerate(genelist):
+        M[i,] = infmat[gene2index[gene] - start_index, indices]
  
     # Create new gene index and score function
-    index2gene = dict([(i, genelist[i]) for i in range(len(genelist))])
+    index2gene = dict(enumerate(genelist))
     return M, index2gene
 
 def heat_vec(gene2heat, index2gene):
