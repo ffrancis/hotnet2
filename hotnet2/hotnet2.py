@@ -21,21 +21,16 @@ def induce_infmat(infmat, index2gene, genelist):
     print "* Inducing infmat..."
     
     start_index = min(index2gene.keys())
-    # Reformat gene index
-    gene2index = dict([(gene, index) for index, gene in index2gene.items()])
+    gene2index = dict([(gene, index) for index, gene in index2gene.iteritems()])
  
     # Identify genes in the given list that are also in the network
     genelist = set(genelist) if type(genelist) != set else genelist
     genelist = sorted(genelist.intersection(gene2index.keys()))
     indices = [gene2index[g]-start_index for g in genelist]
-    print "\t- Genes in list and network:", len( indices )
+    print "\t- Genes in list and network:", len(indices)
  
-    # Create an induced influence matrix
-    M = np.zeros((len(genelist), len(genelist)))
-    for i, gene in enumerate(genelist):
-        M[i,] = infmat[gene2index[gene] - start_index, indices]
- 
-    # Create new gene index and score function
+    # Create and return induced influence matrix and new gene index
+    M = infmat[np.ix_(indices, indices)]
     index2gene = dict(enumerate(genelist))
     return M, index2gene
 
