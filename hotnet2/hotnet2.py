@@ -21,7 +21,7 @@ def induce_infmat(infmat, index2gene, genelist):
     print "* Inducing infmat..."
     
     start_index = min(index2gene.keys())
-    gene2index = dict([(gene, index) for index, gene in index2gene.iteritems()])
+    gene2index = dict((gene, index) for index, gene in index2gene.iteritems())
  
     # Identify genes in the given list that are also in the network
     genelist = set(genelist) if type(genelist) != set else genelist
