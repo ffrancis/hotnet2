@@ -80,7 +80,7 @@ def run(args):
     heat, heat_params = hnio.load_heat_json(args.heat_file)
   
     # compute similarity matrix and extract connected components
-    M, gene_index = hn.induce_infmat(infmat, infmat_index, sorted(heat.keys()))
+    M, gene_index = hn.induce_infmat(infmat, infmat_index, heat.keys())
     h = hn.heat_vec(heat, gene_index)
     sim = hn.similarity_matrix(M, h)
     
