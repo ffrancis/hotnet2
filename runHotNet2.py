@@ -89,7 +89,7 @@ def run(args):
         if args.permutation_type == "heat":
             print "* Generating heat permutations for statistical significance testing" 
             extra_genes = hnio.load_genes(args.permutation_genes_file) if args.permutation_genes_file \
-                            else None
+                            else set()
             heat_permutations = permutations.permute_heat(heat, gene_index.values(),
                                                           args.num_permutations, extra_genes,
                                                           args.parallel)
