@@ -7,6 +7,7 @@ from flask import request
 
 
 import runHotNet2 as hn2
+import json
 
 
 DEFAULT_ARGS = [
@@ -38,21 +39,63 @@ class SimpleRun(restful.Resource):
         try:
             f.write(body)
             f.seek(0)
-            heat = self.run2(f)
 
         finally:
             f.close()
 
         hn2.run(hn2.get_parser().parse_args(DEFAULT_ARGS))
-        return heat, 200
+        result = open('example/output/simple2/viz/subnetworks.json')
+        data = json.load(result)
+        cyjs = self.convert(data['subnetworks'])
+        return cyjs, 200
 
-    def run2(self, temp_file):
-        heat = []
-        for line in temp_file:
+    def convert(self, subnetworks):
+        cyjs = []
+        for key in subnetworks:
 
-            parts = line.rstrip().split('\t')
-            heat.append({
-                'gene': parts[0],
-                'score': parts[1]
-            })
-        return heat
+            subnetwork_list = subnetworks[key]
+            for network in subnetwork_list:
+                cynet = {
+                    'elements': {
+                        'nodes': [],
+                        'edges': []
+                    },
+                    'data': {
+                        'name': "hotnet2 delta: " + str(key)
+                    }
+                }
+                nodes = network['nodes']
+                edges = network['edges']
+
+                cynet['elements']['nodes'] = self.get_nodes(nodes)
+                cynet['elements']['edges'] = self.get_edges(edges)
+                cyjs.append(cynet)
+
+        return cyjs
+
+    def get_nodes(self, original_nodes):
+        nodes = []
+        for n in original_nodes:
+            node = {
+                'data': {
+                    'name': n['name'],
+                    'id': n['name'],
+                    'heat': n['heat']
+                }
+            }
+            nodes.append(node)
+
+        return nodes
+
+    def get_edges(self, original_edges):
+        edges = []
+        for e in original_edges:
+            edge = {
+                'data': {
+                    'source': e['source'],
+                    'target': e['target']
+                }
+            }
+            edges.append(edge)
+
+        return edges
