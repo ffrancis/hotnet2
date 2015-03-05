@@ -4,3 +4,6 @@
 .pydevproject
 .project
 c_routinesmodule.c
+output/
+example/influence_matrices/
+

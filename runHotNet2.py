@@ -61,6 +61,6 @@ def get_parser():
 def run(args):
     extra_delta_args = [args.permuted_networks_path, INFMAT_NAME, MAX_CC_SIZES]
     hnrun.run_helper(args, INFMAT_NAME, hnrun.get_deltas_hotnet2, extra_delta_args)
-
-if __name__ == "__main__": 
-    run(get_parser().parse_args(sys.argv[1:]))
+#
+# if __name__ == "__main__":
+#     run(get_parser().parse_args(sys.argv[1:]))
